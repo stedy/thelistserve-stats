@@ -1,13 +1,25 @@
 #text mining script for 
 library(tm)
 
+#first try cleaning subject line
+
+subject.corpus <- Corpus(VectorSource(test1))
+subject.corpus <- tm_map(subject.corpus, removePunctuation)
+subject.corpus <- tm_map(subject.corpus, removeWords, stopwords('english'))
+subject.ctdm <- TermDocumentMatrix(subject.corpus, control=list(removePunctuation=TRUE,
+                                                      removeNumbers = TRUE,
+                                                      stopwords = TRUE))
+subject.ctdm.m <- as.matrix(subject.ctdm)
+word.freqs.subject <- sort(rowSums(subject.ctdm.m), decreasing=TRUE) 
+# create a data frame with words and their frequencies
+subj.dm <- data.frame(word=names(word.freqs.subject), freq=word.freqs.subject)
+
 clean.corpus <- Corpus(VectorSource(test3$emailonly))
 clean.corpus <- tm_map(clean.corpus, removePunctuation)
 clean.corpus <- tm_map(clean.corpus, removeWords, stopwords('english'))
 ctdm <- TermDocumentMatrix(clean.corpus, control=list(removePunctuation=TRUE,
                                                       removeNumbers = TRUE,
                                                       stopwords = TRUE))
-
 
 #get frequency of words
 ctdm.m <- as.matrix(ctdm)
@@ -19,6 +31,7 @@ ctdm2 <- removeSparseTerms(ctdm, sparse=0.95)
 pdf("findFreqall.pdf", width=37, height=37)
 plot(ctdm2, terms = findFreqTerms(ctdm2, lowfreq = 6), corThreshold = 0.5)
 dev.off()
+
 
 mydata.df <- as.data.frame(inspect(ctdm2))
 
