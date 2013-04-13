@@ -9,8 +9,9 @@ from datetime import datetime
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('email', help = 'full email')
-    parser.add_argument('password')
+    parser.add_argument('-e', '--email', help = 'full email')
+    parser.add_argument('-p', '--password', help = 'full password')
+    parser.add_argument('-s', '--subject', help = 'subject line of interest')
     args = parser.parse_args()
     
     domain = args.email.split("@")[1][0:-4]
@@ -23,7 +24,11 @@ def main():
 
     imap_server.login(args.email, args.password)
     imap_server.select('Inbox')
-    typ, response = imap_server.search(None, '(From "thelistserve.com")')
+
+    if args.subject:
+        typ, response = imap_server.search(None, '(Subject %s)' % args.subject)
+    else:
+        typ, response = imap_server.search(None, '(From "thelistserve.com")')
 
     conn = sqlite3.connect('mail.db')
     cursor = conn.cursor()
