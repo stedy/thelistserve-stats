@@ -11,7 +11,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-e', '--email', help = 'full email')
     parser.add_argument('-p', '--password', help = 'full password')
-    parser.add_argument('-s', '--subject', help = 'subject line of interest')
+    parser.add_argument('-s', '--subject', nargs='*', help = 'subject line of interest')
     args = parser.parse_args()
     
     domain = args.email.split("@")[1][0:-4]
@@ -26,7 +26,7 @@ def main():
     imap_server.select('Inbox')
 
     if args.subject:
-        typ, response = imap_server.search(None, '(Subject %s)' % args.subject)
+        typ, response = imap_server.search(None, '(Subject "[The Listserve] %s")' % args.subject[0])
     else:
         typ, response = imap_server.search(None, '(From "thelistserve.com")')
 
