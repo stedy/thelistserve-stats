@@ -44,8 +44,8 @@ def main():
             date_parsed = email.utils.parsedate(date)
             dt = datetime.fromtimestamp(mktime(date_parsed))
             
-            cursor.execute("""INSERT INTO mail (sender, payload, dt, datetime_text, message_id) 
-                    values (?,?,?,?,?)""", (senderx, body, dt, date, message_id))
+            cursor.execute("""INSERT INTO mail (sender, payload, subject, dt, datetime_text, message_id) 
+                    values (?,?,?,?,?,?)""", (senderx, body, subject, dt, date, message_id))
             conn.commit()
 
 if __name__ == "__main__":

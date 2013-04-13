@@ -1,4 +1,4 @@
-#text mining
+#text mining script for 
 library(tm)
 
 clean.corpus <- Corpus(VectorSource(test3$emailonly))
