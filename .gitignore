@@ -1,4 +1,5 @@
 *.pdf
 *.txt
+*.png
 .Rhistory
 mail.db
