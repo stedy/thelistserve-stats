@@ -1,6 +1,7 @@
 #text mining script for The Listserve
 library(tm)
 library(chron)
+library(wordcloud)
 
 #determine names
 names <- data.frame(table(working$sender.name))
@@ -63,3 +64,8 @@ dev.off()
 
 days <- seq(as.Date("2012-04-18"), as.Date("2013-04-13"), by="1 day")
 j <- setdiff(as.character(days), as.character(raw.datecheck$date))
+
+#finally make word cloud/wordle
+png("listserve_wordcloud.png", width=500, height=500)
+wordcloud(dm$word, dm$freq, min.freq=20, max.words=100)
+dev.off()
